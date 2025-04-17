@@ -17,26 +17,26 @@ class CalculatorVC: UIViewController {
              divide
     }
     
-    var displayValue : String = "" // ekranda gösterilen değer
-    var storedValue: Double =  0 // işlem için saklanan ilk sayı
-    var currentOperation: Operation? = nil // seçilen işlem
+    var displayValue : String = ""
+    var storedValue: Double =  0
+    var currentOperation: Operation? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        displayLabel.text = displayValue // app açıldığında ekranı temizle
+        displayLabel.text = displayValue
     }
 
-    @IBAction func numberTapped(_ sender: UIButton) { // rakam butonları
+    @IBAction func numberTapped(_ sender: UIButton) {
         let number = sender.tag
         if displayValue == "0" {
             displayValue = String(number)
         }else {
             displayValue += String(number)
         }
-        displayLabel.text = displayValue // label i güncelle
+        displayLabel.text = displayValue
     }
 
-    @IBAction func decimalButton(_ sender: UIButton) { // (,) butonu için nokta ekler
+    @IBAction func decimalButton(_ sender: UIButton) {
         if !displayValue.contains(".") {
             displayValue += "."
             displayLabel.text = displayValue
@@ -44,7 +44,7 @@ class CalculatorVC: UIViewController {
     }
     
     @IBAction func equalsTapped(_ sender: UIButton) {
-        let secondValue = Double(displayValue) ?? 0 // 2. sayı alınır
+        let secondValue = Double(displayValue) ?? 0
         guard let operation = currentOperation else { return }
         var result: Double = 0
         
@@ -62,7 +62,7 @@ class CalculatorVC: UIViewController {
             }
             result = storedValue / secondValue
         }
-        displayValue = format(result) // sonucu formatla
+        displayValue = format(result)
         displayLabel.text = displayValue
         currentOperation = nil
     }
@@ -73,10 +73,10 @@ class CalculatorVC: UIViewController {
             present(alert, animated: true)
         }
     
-    private func format(_ value: Double) -> String {    // sonucu düzgün biçimde gösteren yardımcı fonksiyon
+    private func format(_ value: Double) -> String {
             return value.truncatingRemainder(dividingBy: 1) == 0 ?
                 String(Int(value)) :
-                String(format: "%.2f", value) // değilse virgülden sonra 2 basamak
+                String(format: "%.2f", value)
         }
     
     @IBAction func clearTapped(_ sender: UIButton) {
@@ -99,13 +99,13 @@ class CalculatorVC: UIViewController {
         displayValue = "0"
     }
     
-    @IBAction func percentTapped(_ sender: UIButton) {  // "%" butonuna tıklanınca çalışır, sayıyı 100'e böler
+    @IBAction func percentTapped(_ sender: UIButton) {
         let value = Double(displayValue) ?? 0
         displayValue = String(value / 100)
         displayLabel.text = displayValue
     }
     
-    @IBAction func invertSignTapped(_ sender: UIButton) {  // "+/-" butonuna tıklanınca sayının işaretini tersine çevirir
+    @IBAction func invertSignTapped(_ sender: UIButton) {  
         let value = Double(displayValue) ?? 0
         displayValue = String(value * -1)
         displayLabel.text = displayValue
