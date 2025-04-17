@@ -14,7 +14,7 @@
 		7D1721712D83067800E1880A /* Exceptions for "calculator" folder in "calculator" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resources/Info.plist,
+				Info.plist,
 			);
 			target = 7D17215E2D83067700E1880A /* calculator */;
 		};
