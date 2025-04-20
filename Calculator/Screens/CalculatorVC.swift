@@ -7,30 +7,38 @@
 
 import UIKit
 
+// MARK: - Operation Enum
+
+enum Operation: Int {
+    case add = 1,
+         subtract,
+         multiply,
+         divide
+}
 class CalculatorVC: UIViewController {
+    
     @IBOutlet weak var displayLabel: UILabel!
     
-    enum Operation: Int {
-        case add = 1,
-             subtract,
-             multiply,
-             divide
-    }
+    // MARK: - Properties
+
+    private var displayValue: String = "0"
+    private var storedValue: Double = 0
+    private var currentOperation: Operation? = nil
     
-    var displayValue : String = ""
-    var storedValue: Double =  0
-    var currentOperation: Operation? = nil
-    
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         displayLabel.text = displayValue
     }
 
+    // MARK: - Actions
+
     @IBAction func numberTapped(_ sender: UIButton) {
         let number = sender.tag
         if displayValue == "0" {
             displayValue = String(number)
-        }else {
+        } else {
             displayValue += String(number)
         }
         displayLabel.text = displayValue
@@ -42,7 +50,7 @@ class CalculatorVC: UIViewController {
             displayLabel.text = displayValue
         }
     }
-    
+
     @IBAction func equalsTapped(_ sender: UIButton) {
         let secondValue = Double(displayValue) ?? 0
         guard let operation = currentOperation else { return }
@@ -62,30 +70,12 @@ class CalculatorVC: UIViewController {
             }
             result = storedValue / secondValue
         }
+        
         displayValue = format(result)
         displayLabel.text = displayValue
         currentOperation = nil
     }
-    
-    private func showDivisionByZeroAlert() {
-            let alert = UIAlertController(title: "Warning!", message: "Dividing by zero breaks the universe", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
-        }
-    
-    private func format(_ value: Double) -> String {
-            return value.truncatingRemainder(dividingBy: 1) == 0 ?
-                String(Int(value)) :
-                String(format: "%.2f", value)
-        }
-    
-    @IBAction func clearTapped(_ sender: UIButton) {
-        displayValue = "0"
-        storedValue = 0
-        currentOperation = nil
-        displayLabel.text = displayValue
-    }
-    
+
     @IBAction func operationTapped(_ sender: UIButton) {
         let tag = sender.tag
         guard currentOperation == nil else { return }
@@ -93,22 +83,49 @@ class CalculatorVC: UIViewController {
         
         if let operation = Operation(rawValue: tag) {
             currentOperation = operation
-        }else{
+        } else {
             print("Invalid operation")
         }
         displayValue = "0"
     }
-    
+
     @IBAction func percentTapped(_ sender: UIButton) {
         let value = Double(displayValue) ?? 0
         displayValue = String(value / 100)
         displayLabel.text = displayValue
     }
-    
-    @IBAction func invertSignTapped(_ sender: UIButton) {  
+
+    @IBAction func invertSignTapped(_ sender: UIButton) {
         let value = Double(displayValue) ?? 0
         displayValue = String(value * -1)
         displayLabel.text = displayValue
     }
+
+    @IBAction func clearTapped(_ sender: UIButton) {
+        displayValue = "0"
+        storedValue = 0
+        currentOperation = nil
+        displayLabel.text = displayValue
+    }
+}
+
+// MARK: - Private Helpers
+
+private extension CalculatorVC {
     
+    func showDivisionByZeroAlert() {
+        let alert = UIAlertController(
+            title: "Warning!",
+            message: "Dividing by zero breaks the universe",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    func format(_ value: Double) -> String {
+        return value.truncatingRemainder(dividingBy: 1) == 0
+        ? String(Int(value))
+        : String(format: "%.2f", value)
+    }
 }
