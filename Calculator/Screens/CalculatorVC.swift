@@ -15,6 +15,7 @@ enum Operation: Int {
          multiply,
          divide
 }
+
 class CalculatorVC: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
@@ -97,7 +98,13 @@ class CalculatorVC: UIViewController {
 
     @IBAction func invertSignTapped(_ sender: UIButton) {
         let value = Double(displayValue) ?? 0
-        displayValue = String(value * -1)
+        let invertedValue = value * -1
+        
+        if invertedValue.truncatingRemainder(dividingBy: 1) == 0 {
+            displayValue = String(Int(invertedValue))
+        } else {
+            displayValue = String(invertedValue)
+        }
         displayLabel.text = displayValue
     }
 
@@ -124,8 +131,10 @@ private extension CalculatorVC {
     }
     
     func format(_ value: Double) -> String {
-        return value.truncatingRemainder(dividingBy: 1) == 0
-        ? String(Int(value))
-        : String(format: "%.2f", value)
+        if value.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(Int(value))
+        } else {
+            return String(format: "%.2f", value)
+        }
     }
 }
