@@ -121,11 +121,7 @@ class CalculatorVC: UIViewController {
 private extension CalculatorVC {
     
     func showDivisionByZeroAlert() {
-        let alert = UIAlertController(
-            title: "Warning!",
-            message: "Dividing by zero breaks the universe",
-            preferredStyle: .alert
-        )
+        let alert = UIAlertController(title: "Warning!", message: "Dividing by zero breaks the universe!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
